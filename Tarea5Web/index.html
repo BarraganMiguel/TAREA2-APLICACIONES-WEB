@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <h1>Complete los campos con sus datos</h1>
+    <form id="formulario" novalidate>
+
+        <fieldset>
+            <legend> Ingrese sus datos</legend>
+    
+            <div>
+                <label>Nombres</label>
+                <input type="text" id="nombres" placeholder="Nombre">
+            </div>
+            <div>
+                <label>Apellidos</label>
+                <input type="text" id="apellidos" placeholder="Apellidos">
+            </div>
+            <div>
+                <label>Año de nacimiento</label>
+                <input type="date" id="nacimiento" placeholder="Fecha">
+            </div>
+    
+            <div>
+                <label>Telefono</label>
+                <input type="tel" id="telefono" placeholder="Telefono"> 
+            </div>
+    
+            <div>
+                <label>Correo</label>
+                <input type="email" id="correo" placeholder="Email">
+            </div>
+    
+            <div>
+                <label>Mensaje</label>               
+                <textarea id="mensaje" placeholder="Escriba su mensaje..."></textarea>
+            </div>
+            
+            <div>
+                <input type="submit" value="Enviar Datos">
+            </div>
+    
+        </fieldset>
+    
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("formulario");
+
+            form.addEventListener("submit", function (event) {
+                let errores = [];
+
+                const nombres = document.getElementById("nombres").value.trim();
+                const apellidos = document.getElementById("apellidos").value.trim();
+                const nacimiento = document.getElementById("nacimiento").value;
+                const telefono = document.getElementById("telefono").value.trim();
+                const correo = document.getElementById("correo").value.trim();
+                const mensaje = document.getElementById("mensaje").value.trim();
+
+                if (nombres === "" || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}$/.test(nombres)) {
+                    errores.push("Ingrese un nombre válido.");
+                }
+
+                if (apellidos === "" || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}$/.test(apellidos)) {
+                    errores.push("Ingrese apellidos válidos.");
+                }
+
+                if (nacimiento === "") {
+                    errores.push("Seleccione su fecha de nacimiento.");
+                } else {
+                    const fechaNacimiento = new Date(nacimiento);
+                    const hoy = new Date();
+                    if (fechaNacimiento > hoy) {
+                        errores.push("La fecha de nacimiento debe ser anterior a hoy.");
+                    }
+                }
+
+                if (telefono === "" || !/^\d{7,15}$/.test(telefono)) {
+                    errores.push("Ingrese un teléfono válido (solo números, entre 7 y 15 dígitos).");
+                }
+
+                if (correo === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                    errores.push("Ingrese un correo válido.");
+                }
+
+                if (mensaje.length < 10) {
+                    errores.push("El mensaje debe tener al menos 10 caracteres.");
+                }
+
+                if (errores.length > 0) {
+                    event.preventDefault(); // Detiene el envío
+                    alert("Errores:\n\n- " + errores.join("\n- "));
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
